@@ -92,7 +92,6 @@ public class DisplayQueueActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        System.out.println("######################");
         connectToSpotify(requestCode, resultCode, intent);
         loadData();
     }
@@ -175,6 +174,8 @@ public class DisplayQueueActivity extends AppCompatActivity {
                     @Override
                     public void success(Track track, retrofit.client.Response response) {
                         mTracks.add(track);
+                        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
+                        mSongRecyclerView.setAdapter(mSpotifyAdapter);
                         Log.d("GetTrack", "It worked");
                     }
 
@@ -191,12 +192,29 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         }
 
+//        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
+//        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
+//        mSongRecyclerView.setAdapter(mSpotifyAdapter);
 
-//        mTracks.add(new Track())
+//        spotify.searchTracks("Submarine", new Callback<TracksPager>() {
+//            @Override
+//            public void success(TracksPager tracksPager, retrofit.client.Response response) {
+//                mTracks.clear();
+//                mTracks.addAll(tracksPager.tracks.items);
+//                mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
+//                mSongRecyclerView.setAdapter(mSpotifyAdapter);
+//                Log.d("onSearch","Updating...");
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.e("onSearchFailure", "Failed to find song by Submarine");
+//                Log.e("onSearchFailure", error.getMessage());
+//                Log.e("onSearchFailure", error.toString());
+//            }
+//
+//        });
 
-        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
-        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-        mSongRecyclerView.setAdapter(mSpotifyAdapter);
 //        try {
 //            System.out.println(jsonArray.getJSONObject(0));
 //        } catch (JSONException e) {
@@ -204,23 +222,23 @@ public class DisplayQueueActivity extends AppCompatActivity {
 //        }
 //        String[] sliced  = s.split(")");
 //        System.out.println("sliced string is" + sliced);
-        ListView listV = (ListView) findViewById(R.id.listView);
-//        ArrayAdapter<JSONObject> adapter = new ArrayAdapter<JSONObject>(this, R.layout.info2, (List<JSONObject>) jsonArray);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.info2, uriList);
-        listV.setAdapter(adapter);
-        listV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int pos, long id) {
-                // TODO Auto-generated method stub
-
-                Log.v("long clicked", "pos: " + pos);
-
-                displayDialog(uriList.get(pos));
-                return true;
-            }
-        });
-        listV.setLongClickable(true);
+//        ListView listV = (ListView) findViewById(R.id.listView);
+////        ArrayAdapter<JSONObject> adapter = new ArrayAdapter<JSONObject>(this, R.layout.info2, (List<JSONObject>) jsonArray);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.info2, uriList);
+//        listV.setAdapter(adapter);
+//        listV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+//                                           int pos, long id) {
+//                // TODO Auto-generated method stub
+//
+//                Log.v("long clicked", "pos: " + pos);
+//
+//                displayDialog(uriList.get(pos));
+//                return true;
+//            }
+//        });
+//        listV.setLongClickable(true);
 
     }
 
