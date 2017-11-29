@@ -98,31 +98,29 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
         public void bind() {
 
-            Log.d("Bind", this.mTrack.name);
-
-            new Thread(new Runnable()
-            {
-                public void run()
-                {
-                    boolean loaded = false;
-                    while (!loaded) {
-                        try {
-                            final Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(mTrack.album.images.get(0).url).getContent());
-                            mAlbumImageView.post(new Runnable() {
-                                public void run() {
-                                    if (bitmap != null) {
-                                        mAlbumImageView.setImageBitmap(bitmap);
-                                    }
-                                }
-                            });
-                            loaded = true;
-                        } catch (Exception e) {
-
-                        }
-                    }
-                }                }).start();
-
             if (mTrack != null) {
+                new Thread(new Runnable()
+                {
+                    public void run()
+                    {
+                        boolean loaded = false;
+                        while (!loaded) {
+                            try {
+                                final Bitmap bitmap = BitmapFactory.decodeStream((InputStream) new URL(mTrack.album.images.get(0).url).getContent());
+                                mAlbumImageView.post(new Runnable() {
+                                    public void run() {
+                                        if (bitmap != null) {
+                                            mAlbumImageView.setImageBitmap(bitmap);
+                                        }
+                                    }
+                                });
+                                loaded = true;
+                            } catch (Exception e) {
+
+                            }
+                        }
+                    }                }).start();
+
                 mSongTextView.setText(mTrack.name.toString());
                 mAlbumTextView.setText(mTrack.album.name);
                 mArtistTextView.setText(mTrack.artists.get(0).name);
