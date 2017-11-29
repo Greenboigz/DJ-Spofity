@@ -97,6 +97,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
         }
 
         public void bind() {
+
+            Log.d("Bind", this.mTrack.name);
+
             new Thread(new Runnable()
             {
                 public void run()

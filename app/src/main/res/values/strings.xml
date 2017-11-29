@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SpotifyTest</string>
+    <string name="artist">Artist</string>
+    <string name="songName">Song</string>
+    <string name="upvote">Upvote Song</string>
+    <string name="downvote">Downvote Song</string>
+    <string name="voteDialog">Vote on Song</string>
+    <string name="dialogTitle">Vote</string>
+    <string name="removeItem">Remove from Queue</string>
 </resources>

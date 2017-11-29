@@ -223,7 +223,6 @@ public class MainActivity extends Activity implements
             public void success(TracksPager tracksPager, Response response) {
                 mTracks.clear();
                 mTracks.addAll(tracksPager.tracks.items);
-
                 mSongRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 mSongRecyclerView.setAdapter(mSpotifyAdapter);
                 Log.d("onSearch","Updating...");

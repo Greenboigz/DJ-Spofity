@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".DisplayQueueActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,6 +23,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="spg01.SpotifyTest.PlaybackActivity" />
         <activity android:name="spg01.SpotifyTest.SongActivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
