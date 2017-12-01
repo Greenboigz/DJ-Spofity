@@ -130,6 +130,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     public void goToSearch(View v){
         Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("spotifyApi", spotifyApi);
         startActivity(intent);
     }
 
@@ -149,7 +150,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         });
 
 
-        JSONArray jsonArray = null;
+        JSONArray jsonArray;
         try {
             jsonArray = new JSONArray(s);
         } catch (Exception e) {
@@ -161,9 +162,9 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         mTracks.clear();
 
-        final ArrayList<String> uriList = new ArrayList<String>();
+        final ArrayList<String> uriList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject json_data = null;
+            JSONObject json_data;
             String uri = "default";
             try {
                 json_data = jsonArray.getJSONObject(i);
