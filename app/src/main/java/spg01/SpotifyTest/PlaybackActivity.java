@@ -59,11 +59,11 @@ public class PlaybackActivity extends AppCompatActivity implements
 
     @Override
     public void onLoggedIn() {
-        MainActivity.mPlayer.resume(null);
-        final PlaybackState[] playbackState = {MainActivity.mPlayer.getPlaybackState()};
+        Controller.getmPlayer().resume(null);
+        final PlaybackState[] playbackState = {Controller.getmPlayer().getPlaybackState()};
 
         final ImageView albumArt = (ImageView) findViewById(R.id.albumArt);
-        final String artURL = MainActivity.mPlayer.getMetadata().currentTrack.albumCoverWebUrl;
+        final String artURL = Controller.getmPlayer().getMetadata().currentTrack.albumCoverWebUrl;
         new Thread(new Runnable()
         {
             public void run()
@@ -97,12 +97,12 @@ public class PlaybackActivity extends AppCompatActivity implements
 
             @Override
             public void onClick(View v) {
-                playbackState[0] = MainActivity.mPlayer.getPlaybackState();
+                playbackState[0] = Controller.getmPlayer().getPlaybackState();
                 if (playbackState[0].isPlaying){
-                    MainActivity.mPlayer.pause(null);
+                    Controller.getmPlayer().pause(null);
                     playPause.setText("Play");
                 } else {
-                    MainActivity.mPlayer.resume(null);
+                    Controller.getmPlayer().resume(null);
                     playPause.setText("Pause");
                 }
             }
@@ -112,10 +112,10 @@ public class PlaybackActivity extends AppCompatActivity implements
 
             @Override
             public void onClick(View v) {
-                MainActivity.mPlayer.skipToNext(new Player.OperationCallback() {
+                Controller.getmPlayer().skipToNext(new Player.OperationCallback() {
                     @Override
                     public void onSuccess() {
-                        final String artURL = MainActivity.mPlayer.getMetadata().currentTrack.albumCoverWebUrl;
+                        final String artURL = Controller.getmPlayer().getMetadata().currentTrack.albumCoverWebUrl;
                         new Thread(new Runnable()
                         {
                             public void run()
@@ -141,7 +141,7 @@ public class PlaybackActivity extends AppCompatActivity implements
 
                     @Override
                     public void onError(Error error) {
-                        final String artURL = MainActivity.mPlayer.getMetadata().currentTrack.albumCoverWebUrl;
+                        final String artURL = Controller.getmPlayer().getMetadata().currentTrack.albumCoverWebUrl;
                         new Thread(new Runnable()
                         {
                             public void run()
@@ -178,7 +178,7 @@ public class PlaybackActivity extends AppCompatActivity implements
                         "spotify:track:6HbTF52swZiGSJ2cvAJ7PU", "spotify:track:76GlO5H5RT6g7y0gev86Nk",
                         "spotify:track:32eLNDWRd4vdORyUS2uGHD"};
                 int rnd = new Random().nextInt(tracks.length);
-                MainActivity.mPlayer.queue(null, tracks[rnd]);
+                Controller.getmPlayer().queue(null, tracks[rnd]);
             }
         });
     }

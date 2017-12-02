@@ -21,17 +21,17 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 import kaaes.spotify.webapi.android.SpotifyApi;
 
 /**
- * Created by spg01 on 11/25/2017.
+ * Singleton used for accessing mPlayer and SpotifyApi
  */
 
 public class Controller implements ConnectionStateCallback {
 
-    public static Controller main;
+    private static Controller instance;
 
-    public Player mPlayer;
-    public SpotifyApi spotifyApi;
+    private static Player mPlayer;
+    private static SpotifyApi spotifyApi;
 
-    private Context context;
+    private static Context context;
 
     private static final int REQUEST_CODE = 1337;
     private static final String CLIENT_ID = "53398bdf6a4c4f77ab76021fd093347d";
@@ -46,10 +46,26 @@ public class Controller implements ConnectionStateCallback {
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, request);
+        this.authenticate(null, 0, 0);
+
     }
 
-    public void authenticate(Intent intent, int requestCode, int resultCode,
-                             final Player.NotificationCallback notificationCallback) {
+    public static Controller getInstance(Activity activity){
+        if (null==Controller.instance){
+            Controller.instance = new Controller(activity);
+        }
+        return Controller.instance;
+    }
+
+    public static Player getmPlayer(){
+        return mPlayer;
+    }
+    public static SpotifyApi getSpotifyApi(){
+        return spotifyApi;
+    }
+
+    private void authenticate(Intent intent, int requestCode, int resultCode/*,
+                             final Player.NotificationCallback notificationCallback*/) {
         spotifyApi = new SpotifyApi();
 
         // Check if result comes from the correct activity
@@ -61,9 +77,9 @@ public class Controller implements ConnectionStateCallback {
                 Spotify.getPlayer(playerConfig, context, new SpotifyPlayer.InitializationObserver() {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                        main.mPlayer = spotifyPlayer;
-                        main.mPlayer.addConnectionStateCallback(Controller.main);
-                        main.mPlayer.addNotificationCallback(notificationCallback);
+                        mPlayer = spotifyPlayer;
+                        //mPlayer.addConnectionStateCallback(Controller);
+                        //mPlayer.addNotificationCallback(notificationCallback);
 
                     }
 
@@ -79,7 +95,7 @@ public class Controller implements ConnectionStateCallback {
 
     @Override
     public void onLoggedIn() {
-        Log.d("MainActivity", "User logged in");
+        Log.d("Controller", "User logged in");
 
         mPlayer.playUri(null, "spotify:track:3CRDbSIZ4r5MsZ0YwxuEkn", 0, 0);
     }

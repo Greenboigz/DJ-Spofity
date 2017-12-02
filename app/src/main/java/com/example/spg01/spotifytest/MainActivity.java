@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        connectToSpotify(requestCode, resultCode, intent, this, this, this);
+        //connectToSpotify(requestCode, resultCode, intent, this, this, this);
     }
 
     public static void connectToSpotify(int requestCode, int resultCode, Intent intent,

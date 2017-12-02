@@ -44,6 +44,7 @@ import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
+import spg01.SpotifyTest.Controller;
 import spg01.SpotifyTest.OnSongListListener;
 import spg01.SpotifyTest.SongAdapter;
 
@@ -57,7 +58,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     private ArrayList<Track> mTracks;
 
-    public static SpotifyApi spotifyApi;
+    public static SpotifyApi spotifyApi = Controller.getInstance(new Activity()).getSpotifyApi();
     public static final int REQUEST_CODE = 1337;
     public static final String CLIENT_ID = "53398bdf6a4c4f77ab76021fd093347d";
     public static final String REDIRECT_URI = "http://facebook.com";
@@ -77,7 +78,10 @@ public class DisplayQueueActivity extends AppCompatActivity {
         System.out.println("2");
         AuthenticationRequest request = builder.build();
         System.out.println("after request builder");
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+        spotifyApi = Controller.getInstance(this).getSpotifyApi();
+        loadData();
+
+//        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
 
 //        searchEditText = (EditText) findViewById(R.id.SearchEditText);
 
@@ -92,7 +96,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        connectToSpotify(requestCode, resultCode, intent);
+        //connectToSpotify(requestCode, resultCode, intent);
         loadData();
     }
 

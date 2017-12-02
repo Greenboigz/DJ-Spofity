@@ -54,7 +54,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    MainActivity.mPlayer.queue(new OperationCallback() {
+                    Controller.getmPlayer().queue(new OperationCallback() {
                         @Override
                         public void onSuccess() {
                             Log.d("onClick", "Add Song to Queue");
