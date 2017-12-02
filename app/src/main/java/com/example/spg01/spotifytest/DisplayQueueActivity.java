@@ -45,6 +45,7 @@ import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import spg01.SpotifyTest.OnSongListListener;
+import spg01.SpotifyTest.QueueAdapter;
 import spg01.SpotifyTest.SongAdapter;
 
 
@@ -53,7 +54,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     private ListView listView;
     private RecyclerView mSongRecyclerView;
-    private SongAdapter mSpotifyAdapter;
+    private QueueAdapter mSpotifyAdapter;
 
     private ArrayList<Track> mTracks;
 
@@ -85,7 +86,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this.getBaseContext()));
 
         mTracks = new ArrayList<>();
-        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
+        mSpotifyAdapter = new QueueAdapter(mTracks, new OnSongListListener(), this);
         mSongRecyclerView.setAdapter(mSpotifyAdapter);
     }
 
@@ -130,6 +131,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     public void goToSearch(View v){
         Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("spotifyApi", spotifyApi);
         startActivity(intent);
     }
 
@@ -149,7 +151,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         });
 
 
-        JSONArray jsonArray = null;
+        JSONArray jsonArray;
         try {
             jsonArray = new JSONArray(s);
         } catch (Exception e) {
@@ -161,22 +163,28 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         mTracks.clear();
 
-        final ArrayList<String> uriList = new ArrayList<String>();
+        final ArrayList<String> uriList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject json_data = null;
+            JSONObject json_data;
             String uri = "default";
             try {
                 json_data = jsonArray.getJSONObject(i);
                 uri = json_data.getString("uri");
-//                spotify.getTrack
-//                spotify.getTrack()
                 spotify.getTrack(uri, new Callback<Track>() {
                     @Override
                     public void success(Track track, retrofit.client.Response response) {
-                        mTracks.add(track);
-                        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-                        mSongRecyclerView.setAdapter(mSpotifyAdapter);
-                        Log.d("GetTrack", "It worked");
+                        boolean contains = false;
+                        for (Track t : mTracks) {
+                            if (t.id.equals(track.id)){
+                                contains = true;
+                            }
+                        }
+                        if (!contains) {
+                            mTracks.add(track);
+                            mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
+                            mSongRecyclerView.setAdapter(mSpotifyAdapter);
+                            Log.d("GetTrack", "It worked");
+                        }
                     }
 
                     @Override
@@ -188,57 +196,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            uriList.add(uri);
-
         }
-
-//        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
-//        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-//        mSongRecyclerView.setAdapter(mSpotifyAdapter);
-
-//        spotify.searchTracks("Submarine", new Callback<TracksPager>() {
-//            @Override
-//            public void success(TracksPager tracksPager, retrofit.client.Response response) {
-//                mTracks.clear();
-//                mTracks.addAll(tracksPager.tracks.items);
-//                mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-//                mSongRecyclerView.setAdapter(mSpotifyAdapter);
-//                Log.d("onSearch","Updating...");
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Log.e("onSearchFailure", "Failed to find song by Submarine");
-//                Log.e("onSearchFailure", error.getMessage());
-//                Log.e("onSearchFailure", error.toString());
-//            }
-//
-//        });
-
-//        try {
-//            System.out.println(jsonArray.getJSONObject(0));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        String[] sliced  = s.split(")");
-//        System.out.println("sliced string is" + sliced);
-//        ListView listV = (ListView) findViewById(R.id.listView);
-////        ArrayAdapter<JSONObject> adapter = new ArrayAdapter<JSONObject>(this, R.layout.info2, (List<JSONObject>) jsonArray);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.info2, uriList);
-//        listV.setAdapter(adapter);
-//        listV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-//                                           int pos, long id) {
-//                // TODO Auto-generated method stub
-//
-//                Log.v("long clicked", "pos: " + pos);
-//
-//                displayDialog(uriList.get(pos));
-//                return true;
-//            }
-//        });
-//        listV.setLongClickable(true);
 
     }
 
