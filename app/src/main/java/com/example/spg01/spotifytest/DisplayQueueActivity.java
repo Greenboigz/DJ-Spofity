@@ -45,6 +45,7 @@ import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import spg01.SpotifyTest.OnSongListListener;
+import spg01.SpotifyTest.QueueAdapter;
 import spg01.SpotifyTest.SongAdapter;
 
 
@@ -53,7 +54,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     private ListView listView;
     private RecyclerView mSongRecyclerView;
-    private SongAdapter mSpotifyAdapter;
+    private QueueAdapter mSpotifyAdapter;
 
     private ArrayList<Track> mTracks;
 
@@ -85,7 +86,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this.getBaseContext()));
 
         mTracks = new ArrayList<>();
-        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
+        mSpotifyAdapter = new QueueAdapter(mTracks, new OnSongListListener(), this);
         mSongRecyclerView.setAdapter(mSpotifyAdapter);
     }
 
