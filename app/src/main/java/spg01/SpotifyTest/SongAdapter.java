@@ -70,7 +70,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                             Log.d("onClick", "Add Song to Queue");
                             Log.d("adding song to queue:", holder.mTrack.uri);
                             addSong(holder.mTrack.uri);
-                            Toast.makeText(MyApp.getInstance().getApplicationContext(), "Added song to Queue", Toast.LENGTH_LONG);
+                            Toast.makeText(MyApp.getContext(), "Added song to Queue", Toast.LENGTH_LONG);
                         }
 
                         @Override
