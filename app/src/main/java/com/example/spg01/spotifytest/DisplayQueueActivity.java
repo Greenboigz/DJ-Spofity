@@ -45,6 +45,7 @@ import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import spg01.SpotifyTest.OnSongListListener;
+import spg01.SpotifyTest.QueueAdapter;
 import spg01.SpotifyTest.SongAdapter;
 
 
@@ -53,7 +54,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     private ListView listView;
     private RecyclerView mSongRecyclerView;
-    private SongAdapter mSpotifyAdapter;
+    private QueueAdapter mSpotifyAdapter;
 
     private ArrayList<Track> mTracks;
 
@@ -85,7 +86,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this.getBaseContext()));
 
         mTracks = new ArrayList<>();
-        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
+        mSpotifyAdapter = new QueueAdapter(mTracks, new OnSongListListener(), this);
         mSongRecyclerView.setAdapter(mSpotifyAdapter);
     }
 
@@ -130,6 +131,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     public void goToSearch(View v){
         Intent intent = new Intent(this, MainActivity.class);
+//        intent.putExtra("spotifyApi", spotifyApi);
         startActivity(intent);
     }
 
@@ -149,7 +151,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
         });
 
 
-        JSONArray jsonArray = null;
+        JSONArray jsonArray;
         try {
             jsonArray = new JSONArray(s);
         } catch (Exception e) {
@@ -161,7 +163,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         mTracks.clear();
 
-        final ArrayList<String> uriList = new ArrayList<String>();
+        final ArrayList<String> uriList = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json_data;
             String uri = "default";
