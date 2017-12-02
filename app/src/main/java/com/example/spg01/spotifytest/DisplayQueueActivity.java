@@ -3,6 +3,7 @@ package com.example.spg01.spotifytest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,6 +64,8 @@ public class DisplayQueueActivity extends AppCompatActivity {
     public static final String CLIENT_ID = "53398bdf6a4c4f77ab76021fd093347d";
     public static final String REDIRECT_URI = "http://facebook.com";
 
+    public String data = "default";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,17 @@ public class DisplayQueueActivity extends AppCompatActivity {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         System.out.println("initialized");
-                        DisplayQueueActivity.this.loadData();
+                        final Handler handler = new Handler();
+                        final int delay = 5000;
+                        handler.postDelayed(new Runnable(){
+                            public void run(){
+                                DisplayQueueActivity.this.loadData();
+
+                                handler.postDelayed(this,delay);
+                            }
+                        }, delay);
+//                        DisplayQueueActivity.this.loadData();
+
 //                        mPlayer = spotifyPlayer;
 //                        mPlayer.addConnectionStateCallback(connectionCallback);
 //                        // mPlayer.addNotificationCallback(MainActivity.this);
@@ -208,16 +221,19 @@ public class DisplayQueueActivity extends AppCompatActivity {
                 .setTitle(R.string.dialogTitle).setPositiveButton(R.string.upvote, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) { // upvote
                 sendUpvote(uri);
+
             }
         })
                 .setNegativeButton(R.string.downvote, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) { //downvote
                         sendDownvote(uri);
+
                     }
                 })
                 .setNeutralButton(R.string.removeItem, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) { //downvote
                         updateBeforeDelete(uri);
+
                     }
                 });
         AlertDialog dialog = builder.create();
@@ -227,6 +243,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
 
     public void loadData() {
+        System.out.println("IN LOAD DATA");
         String URL = "https://mobilefinalproject-184515.appspot.com/ ";
         RequestQueue q = Volley.newRequestQueue(this);
         StringRequest getReq = new StringRequest(Request.Method.GET, URL,
@@ -235,7 +252,16 @@ public class DisplayQueueActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         System.out.println("GET response received.");
                         System.out.println("response: " + response);
-                        displayData(response);
+
+                        if (data.equals(response)){
+//                            displayData(response);
+                            // do nothing because nothing has changed
+                        }else{
+                            System.out.println("FOUND DIFFERENCE IN DATA UPDATING");
+                            data = response;
+                            displayData(response);
+                        }
+//                        displayData(response);
 
 
 
@@ -283,6 +309,8 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
 
         q.add(postReq);
+        System.out.println("about to refresh");
+        this.loadData();
     }
 
     public void sendDownvote (String URI) {
@@ -314,6 +342,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
 
         q.add(postReq);
+
     }
 
     public void updateBeforeDelete (String URI) {
@@ -347,6 +376,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         q.add(postReq);
         deleteEntry();
+
     }
     public void deleteEntry () {
 //        JSONObject json = new JSONObject("{\"type\" : \"example\"}");
