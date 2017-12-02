@@ -255,6 +255,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
                         if (data.equals(response)){
 //                            displayData(response);
+                            System.out.println("Nothing has changed");
                             // do nothing because nothing has changed
                         }else{
                             System.out.println("FOUND DIFFERENCE IN DATA UPDATING");
