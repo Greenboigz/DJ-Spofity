@@ -58,7 +58,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
     private ArrayList<Track> mTracks;
 
-    public static SpotifyApi spotifyApi = Controller.getInstance(new Activity()).getSpotifyApi();
+    public static SpotifyApi spotifyApi;
     public static final int REQUEST_CODE = 1337;
     public static final String CLIENT_ID = "53398bdf6a4c4f77ab76021fd093347d";
     public static final String REDIRECT_URI = "http://facebook.com";
