@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DJ-Spofity.iml" filepath="$PROJECT_DIR$/DJ-Spofity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SpotifyTest.iml" filepath="$PROJECT_DIR$/SpotifyTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

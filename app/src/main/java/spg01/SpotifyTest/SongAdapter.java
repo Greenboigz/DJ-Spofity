@@ -64,36 +64,26 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    MainActivity.mPlayer.queue(new OperationCallback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d("onClick", "Add Song to Queue");
-                            Log.d("adding song to queue:", holder.mTrack.uri);
-                            addSong(holder.mTrack.uri);
-                            Toast.makeText(MyApp.getContext(), "Added song to Queue", Toast.LENGTH_LONG);
-                        }
-
-                        @Override
-                        public void onError(Error error) {
-                            Log.e("onClick", "Add Song to Queue");
-                        }
-                    }, holder.mTrack.uri);
-//                    MainActivity.activity.setContentView(R.layout.activity_song);
+                    addSong(holder.mTrack.uri, holder.mTrack.name);
+                    Log.v("OnClick", String.format("Adding song %s to Queue", holder.mTrack.name));
+                    Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Adding song %s to Queue", holder.mTrack.name), Toast.LENGTH_LONG);
                 }
             }
         });
     }
 
-    public void addSong (String URI) {
+    public void addSong (String URI, final String name) {
 
         String URL = "https://mobilefinalproject-184515.appspot.com/ ";
         final String uri= URI.substring(14);
-        RequestQueue q = Volley.newRequestQueue(MyApp.getContext());
+        RequestQueue q = Volley.newRequestQueue(MainActivity.mActivity);
         StringRequest postReq = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
+                Log.v("OnClick", String.format("Added song %s to Queue", name));
+                Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Added song %s to Queue", name), Toast.LENGTH_LONG);
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override

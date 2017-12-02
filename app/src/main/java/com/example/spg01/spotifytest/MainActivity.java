@@ -54,10 +54,14 @@ public class MainActivity extends Activity implements
     public static final String CLIENT_ID = "53398bdf6a4c4f77ab76021fd093347d";
     public static final String REDIRECT_URI = "http://facebook.com";
 
+    public static MainActivity mActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mActivity = this;
 
         AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
                 AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
