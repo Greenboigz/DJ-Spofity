@@ -163,20 +163,26 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
         final ArrayList<String> uriList = new ArrayList<String>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject json_data = null;
+            JSONObject json_data;
             String uri = "default";
             try {
                 json_data = jsonArray.getJSONObject(i);
                 uri = json_data.getString("uri");
-//                spotify.getTrack
-//                spotify.getTrack()
                 spotify.getTrack(uri, new Callback<Track>() {
                     @Override
                     public void success(Track track, retrofit.client.Response response) {
-                        mTracks.add(track);
-                        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-                        mSongRecyclerView.setAdapter(mSpotifyAdapter);
-                        Log.d("GetTrack", "It worked");
+                        boolean contains = false;
+                        for (Track t : mTracks) {
+                            if (t.id.equals(track.id)){
+                                contains = true;
+                            }
+                        }
+                        if (!contains) {
+                            mTracks.add(track);
+                            mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
+                            mSongRecyclerView.setAdapter(mSpotifyAdapter);
+                            Log.d("GetTrack", "It worked");
+                        }
                     }
 
                     @Override
@@ -188,57 +194,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            uriList.add(uri);
-
         }
-
-//        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
-//        mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-//        mSongRecyclerView.setAdapter(mSpotifyAdapter);
-
-//        spotify.searchTracks("Submarine", new Callback<TracksPager>() {
-//            @Override
-//            public void success(TracksPager tracksPager, retrofit.client.Response response) {
-//                mTracks.clear();
-//                mTracks.addAll(tracksPager.tracks.items);
-//                mSongRecyclerView.setLayoutManager(new LinearLayoutManager(DisplayQueueActivity.this));
-//                mSongRecyclerView.setAdapter(mSpotifyAdapter);
-//                Log.d("onSearch","Updating...");
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                Log.e("onSearchFailure", "Failed to find song by Submarine");
-//                Log.e("onSearchFailure", error.getMessage());
-//                Log.e("onSearchFailure", error.toString());
-//            }
-//
-//        });
-
-//        try {
-//            System.out.println(jsonArray.getJSONObject(0));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        String[] sliced  = s.split(")");
-//        System.out.println("sliced string is" + sliced);
-//        ListView listV = (ListView) findViewById(R.id.listView);
-////        ArrayAdapter<JSONObject> adapter = new ArrayAdapter<JSONObject>(this, R.layout.info2, (List<JSONObject>) jsonArray);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.info2, uriList);
-//        listV.setAdapter(adapter);
-//        listV.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-//                                           int pos, long id) {
-//                // TODO Auto-generated method stub
-//
-//                Log.v("long clicked", "pos: " + pos);
-//
-//                displayDialog(uriList.get(pos));
-//                return true;
-//            }
-//        });
-//        listV.setLongClickable(true);
 
     }
 
