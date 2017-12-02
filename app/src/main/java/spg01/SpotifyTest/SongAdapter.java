@@ -9,8 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.spg01.spotifytest.MainActivity;
+import com.example.spg01.spotifytest.MyApp;
 import com.example.spg01.spotifytest.R;
 import com.spotify.sdk.android.player.Error;
 import com.spotify.sdk.android.player.Player;
@@ -21,7 +29,9 @@ import spg01.SpotifyTest.SongFragment.OnListFragmentInteractionListener;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Track} and makes a call to the
@@ -54,21 +64,47 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    MainActivity.mPlayer.queue(new OperationCallback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d("onClick", "Add Song to Queue");
-                        }
-
-                        @Override
-                        public void onError(Error error) {
-                            Log.e("onClick", "Add Song to Queue");
-                        }
-                    }, holder.mTrack.uri);
-//                    MainActivity.activity.setContentView(R.layout.activity_song);
+                    addSong(holder.mTrack.uri, holder.mTrack.name);
+                    Log.v("OnClick", String.format("Adding song %s to Queue", holder.mTrack.name));
+                    Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Adding song %s to Queue", holder.mTrack.name), Toast.LENGTH_LONG);
                 }
             }
         });
+    }
+
+    public void addSong (String URI, final String name) {
+
+        String URL = "https://mobilefinalproject-184515.appspot.com/ ";
+        final String uri= URI.substring(14);
+        RequestQueue q = Volley.newRequestQueue(MainActivity.mActivity);
+        StringRequest postReq = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.v("OnClick", String.format("Added song %s to Queue", name));
+                Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Added song %s to Queue", name), Toast.LENGTH_LONG);
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<>();
+
+                MyData.put("uri", uri ); //Add the data you'd like to send to the server.
+                MyData.put("extraInfo", "nothing");
+                MyData.put("ranking", String.valueOf(1));
+
+
+                return MyData;
+            }
+        };
+
+
+        q.add(postReq);
     }
 
     @Override
