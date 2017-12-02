@@ -9,8 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.spg01.spotifytest.MainActivity;
+import com.example.spg01.spotifytest.MyApp;
 import com.example.spg01.spotifytest.R;
 import com.spotify.sdk.android.player.Error;
 import com.spotify.sdk.android.player.Player;
@@ -21,7 +29,9 @@ import spg01.SpotifyTest.SongFragment.OnListFragmentInteractionListener;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Track} and makes a call to the
@@ -58,6 +68,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                         @Override
                         public void onSuccess() {
                             Log.d("onClick", "Add Song to Queue");
+                            Log.d("adding song to queue:", holder.mTrack.uri);
+                            addSong(holder.mTrack.uri);
+                            Toast.makeText(MyApp.getInstance().getApplicationContext(), "Added song to Queue", Toast.LENGTH_LONG);
                         }
 
                         @Override
@@ -69,6 +82,39 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                 }
             }
         });
+    }
+
+    public void addSong (String URI) {
+
+        String URL = "https://mobilefinalproject-184515.appspot.com/ ";
+        final String uri= URI.substring(14);
+        RequestQueue q = Volley.newRequestQueue(MyApp.getContext());
+        StringRequest postReq = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<>();
+
+                MyData.put("uri", uri ); //Add the data you'd like to send to the server.
+                MyData.put("extraInfo", "nothing");
+                MyData.put("ranking", String.valueOf(1));
+
+
+                return MyData;
+            }
+        };
+
+
+        q.add(postReq);
     }
 
     @Override
