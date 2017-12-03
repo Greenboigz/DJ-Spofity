@@ -171,48 +171,6 @@ public class MainActivity extends Activity implements
         Log.d("MainActivity", "Received connection message: " + message);
     }
 
-    public void onPlay(View v) {
-        mPlayer.resume(new Player.OperationCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d("onResume","Resume Success!");
-            }
-
-            @Override
-            public void onError(Error error) {
-                Log.e("onPause","Pause Failed! " + error.toString());
-            }
-        });
-    }
-
-    public void onPause(View v) {
-        mPlayer.pause(new Player.OperationCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d("onPause","Pause Success!");
-            }
-
-            @Override
-            public void onError(Error error) {
-                Log.e("onPause","Pause Failed! " + error.toString());
-            }
-        });
-    }
-
-    public void onNext(View v) {
-        mPlayer.skipToNext(new Player.OperationCallback() {
-            @Override
-            public void onSuccess() {
-                Log.d("onSkipToNext","Skip Success!");
-            }
-
-            @Override
-            public void onError(Error error) {
-                Log.e("onSkipToNext","Skip Failed! " + error.toString());
-            }
-        });
-    }
-
 //    public void onSong(View v) {
 //        Log.d("onSong", "Something's happening");
 //        setContentView(R.layout.activity_playback);
