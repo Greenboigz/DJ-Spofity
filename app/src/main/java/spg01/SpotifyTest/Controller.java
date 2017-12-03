@@ -46,7 +46,8 @@ public class Controller implements ConnectionStateCallback {
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, request);
-        this.authenticate(null, 0, 0);
+        this.authenticate(null, REQUEST_CODE, REQUEST_CODE, activity);
+        Log.i("Controller", "Authenticated");
 
     }
 
@@ -64,7 +65,7 @@ public class Controller implements ConnectionStateCallback {
         return spotifyApi;
     }
 
-    private void authenticate(Intent intent, int requestCode, int resultCode/*,
+    private void authenticate(Intent intent, int requestCode, int resultCode, Activity activity/*,
                              final Player.NotificationCallback notificationCallback*/) {
         spotifyApi = new SpotifyApi();
 
@@ -78,8 +79,8 @@ public class Controller implements ConnectionStateCallback {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         mPlayer = spotifyPlayer;
-                        //mPlayer.addConnectionStateCallback(Controller);
-                        //mPlayer.addNotificationCallback(notificationCallback);
+                        mPlayer.addConnectionStateCallback(null);
+                        mPlayer.addNotificationCallback(null);
 
                     }
 
@@ -102,22 +103,22 @@ public class Controller implements ConnectionStateCallback {
 
     @Override
     public void onLoggedOut() {
-        Log.e("MainActivity", "User logged out");
+        Log.e("Controller", "User logged out");
     }
 
     @Override
     public void onLoginFailed(Error error) {
-        Log.e("MainActivity", "Login failed");
+        Log.e("Controller", "Login failed");
     }
 
     @Override
     public void onTemporaryError() {
-        Log.e("MainActivity", "Temporary error occurred");
+        Log.e("Controller", "Temporary error occurred");
     }
 
     @Override
     public void onConnectionMessage(String message) {
-        Log.d("MainActivity", "Received connection message: " + message);
+        Log.d("Controller", "Received connection message: " + message);
     }
 
 }

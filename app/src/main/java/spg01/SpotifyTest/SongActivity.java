@@ -52,15 +52,15 @@ public class SongActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_song);
 
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
-                AuthenticationResponse.Type.TOKEN,
-                REDIRECT_URI);
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
-        AuthenticationRequest request = builder.build();
-
-        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
+//        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
+//                AuthenticationResponse.Type.TOKEN,
+//                REDIRECT_URI);
+//        builder.setScopes(new String[]{"user-read-private", "streaming"});
+//        AuthenticationRequest request = builder.build();
+//
+//        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
 
         searchEditText = (EditText) findViewById(R.id.SearchEditText);
     }
@@ -69,52 +69,52 @@ public class SongActivity extends Activity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        spotifyApi = new SpotifyApi();
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
-                spotifyApi.setAccessToken(response.getAccessToken());
-                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
-                    @Override
-                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                        mPlayer = spotifyPlayer;
-                        mPlayer.addConnectionStateCallback(SongActivity.this);
-                        // mPlayer.addNotificationCallback(SongActivity.this);
-                        mPlayer.addNotificationCallback(new Player.NotificationCallback() {
-
-                            @Override
-                            public void onPlaybackEvent(PlayerEvent playerEvent) {
-
-                                if (playerEvent == PlayerEvent.kSpPlaybackNotifyTrackDelivered) {
-
-                                    Toast.makeText(SongActivity.this, "Delivered", Toast.LENGTH_LONG).show();
-                                    System.out.println("Delivered");
-
-                                }
-                            }
-
-                            @Override
-                            public void onPlaybackError(Error error) {
-
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Log.e("SongActivity", "Could not authenticate player: " + throwable.getMessage());
-                    }
-                });
-            }
-        }
+//        spotifyApi = new SpotifyApi();
+//
+//        // Check if result comes from the correct activity
+//        if (requestCode == REQUEST_CODE) {
+//            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+//            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+//                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+//                spotifyApi.setAccessToken(response.getAccessToken());
+//                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
+//                    @Override
+//                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+//                        mPlayer = spotifyPlayer;
+//                        mPlayer.addConnectionStateCallback(SongActivity.this);
+//                        // mPlayer.addNotificationCallback(SongActivity.this);
+//                        mPlayer.addNotificationCallback(new Player.NotificationCallback() {
+//
+//                            @Override
+//                            public void onPlaybackEvent(PlayerEvent playerEvent) {
+//
+//                                if (playerEvent == PlayerEvent.kSpPlaybackNotifyTrackDelivered) {
+//
+//                                    Toast.makeText(SongActivity.this, "Delivered", Toast.LENGTH_LONG).show();
+//                                    System.out.println("Delivered");
+//
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onPlaybackError(Error error) {
+//
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable throwable) {
+//                        Log.e("SongActivity", "Could not authenticate player: " + throwable.getMessage());
+//                    }
+//                });
+//            }
+//        }
     }
 
     @Override
     protected void onDestroy() {
-        Spotify.destroyPlayer(this);
+        //Spotify.destroyPlayer(this);
         super.onDestroy();
     }
 
