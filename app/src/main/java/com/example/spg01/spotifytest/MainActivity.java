@@ -110,6 +110,8 @@ public class MainActivity extends Activity implements
                         Log.e("InitializationObserver", "Get Player Error");
                     }
                 });
+            } else {
+                Log.e("MainActivity", "Response is not a token");
             }
         }
     }
@@ -215,7 +217,6 @@ public class MainActivity extends Activity implements
 //    }
 
     public void onSearch(View v) {
-
         SpotifyService spotify = spotifyApi.getService();
 
         spotify.searchTracks(searchEditText.getText().toString(), new Callback<TracksPager>() {

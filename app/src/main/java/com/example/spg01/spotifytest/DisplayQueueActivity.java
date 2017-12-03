@@ -55,7 +55,7 @@ public class DisplayQueueActivity extends AppCompatActivity {
     private ListView listView;
     private RecyclerView mSongRecyclerView;
     private SongAdapter mSpotifyAdapter;
-
+    Controller controller;
     private ArrayList<Track> mTracks;
 
     public static SpotifyApi spotifyApi;
@@ -71,14 +71,15 @@ public class DisplayQueueActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_queue);
 //        this.loadData();
 
-        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
-                AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
-        System.out.println("1");
-        builder.setScopes(new String[]{"user-read-private", "streaming"});
-        System.out.println("2");
-        AuthenticationRequest request = builder.build();
-        System.out.println("after request builder");
-        spotifyApi = Controller.getInstance(this).getSpotifyApi();
+//        AuthenticationRequest.Builder builder = new AuthenticationRequest.Builder(CLIENT_ID,
+//                AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+//        System.out.println("1");
+//        builder.setScopes(new String[]{"user-read-private", "streaming"});
+//        System.out.println("2");
+//        AuthenticationRequest request = builder.build();
+//        System.out.println("after request builder");
+        controller = Controller.getInstance(this);
+        spotifyApi = Controller.getSpotifyApi();
         loadData();
 
 //        AuthenticationClient.openLoginActivity(this, REQUEST_CODE, request);
@@ -97,40 +98,42 @@ public class DisplayQueueActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         //connectToSpotify(requestCode, resultCode, intent);
+        controller = Controller.getInstance(this);
+        spotifyApi = Controller.getSpotifyApi();
         loadData();
     }
 
 
-    public void connectToSpotify(int requestCode, int resultCode, Intent intent) {
-        spotifyApi = new SpotifyApi();
-
-        // Check if result comes from the correct activity
-        if (requestCode == REQUEST_CODE) {
-
-            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
-                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
-                spotifyApi.setAccessToken(response.getAccessToken());
-                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
-                    @Override
-                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
-                        System.out.println("initialized");
-                        DisplayQueueActivity.this.loadData();
-//                        mPlayer = spotifyPlayer;
-//                        mPlayer.addConnectionStateCallback(connectionCallback);
-//                        // mPlayer.addNotificationCallback(MainActivity.this);
-//                        mPlayer.addNotificationCallback(notificationCallback);
-
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        Log.e("InitializationObserver", "Get Player Error");
-                    }
-                });
-            }
-        }
-    }
+//    public void connectToSpotify(int requestCode, int resultCode, Intent intent) {
+//        spotifyApi = new SpotifyApi();
+//
+//        // Check if result comes from the correct activity
+//        if (requestCode == REQUEST_CODE) {
+//
+//            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
+//            if (response.getType() == AuthenticationResponse.Type.TOKEN) {
+//                Config playerConfig = new Config(this, response.getAccessToken(), CLIENT_ID);
+//                spotifyApi.setAccessToken(response.getAccessToken());
+//                Spotify.getPlayer(playerConfig, this, new SpotifyPlayer.InitializationObserver() {
+//                    @Override
+//                    public void onInitialized(SpotifyPlayer spotifyPlayer) {
+//                        System.out.println("initialized");
+//                        DisplayQueueActivity.this.loadData();
+////                        mPlayer = spotifyPlayer;
+////                        mPlayer.addConnectionStateCallback(connectionCallback);
+////                        // mPlayer.addNotificationCallback(MainActivity.this);
+////                        mPlayer.addNotificationCallback(notificationCallback);
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable throwable) {
+//                        Log.e("InitializationObserver", "Get Player Error");
+//                    }
+//                });
+//            }
+//        }
+//    }
 
     public void goToSearch(View v){
         Intent intent = new Intent(this, MainActivity.class);
@@ -149,7 +152,9 @@ public class DisplayQueueActivity extends AppCompatActivity {
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.e("onSearchFailure", "Failed to find song by `FreeBird`");
+                Log.e("onSearchFailure", error.getMessage());
+                Log.e("onSearchFailure", error.toString());
             }
         });
 

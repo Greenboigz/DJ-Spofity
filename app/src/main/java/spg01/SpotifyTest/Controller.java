@@ -20,6 +20,8 @@ import com.spotify.sdk.android.player.SpotifyPlayer;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Singleton used for accessing mPlayer and SpotifyApi
  */
@@ -46,7 +48,7 @@ public class Controller implements ConnectionStateCallback {
         AuthenticationRequest request = builder.build();
 
         AuthenticationClient.openLoginActivity(activity, REQUEST_CODE, request);
-        this.authenticate(null, REQUEST_CODE, REQUEST_CODE, activity);
+        this.authenticate(activity.getIntent(), REQUEST_CODE, RESULT_OK, activity);
         Log.i("Controller", "Authenticated");
 
     }
@@ -59,13 +61,19 @@ public class Controller implements ConnectionStateCallback {
     }
 
     public static Player getmPlayer(){
+        if (mPlayer == null){
+            Log.e("getmPlayer","Must authenticate first");
+        }
         return mPlayer;
     }
     public static SpotifyApi getSpotifyApi(){
+        if (spotifyApi == null){
+            Log.e("getSpotifyApi","Must authenticate first");
+        }
         return spotifyApi;
     }
 
-    private void authenticate(Intent intent, int requestCode, int resultCode, Activity activity/*,
+    private void authenticate(Intent intent, int requestCode, int resultCode, final Activity activity/*,
                              final Player.NotificationCallback notificationCallback*/) {
         spotifyApi = new SpotifyApi();
 
@@ -79,8 +87,8 @@ public class Controller implements ConnectionStateCallback {
                     @Override
                     public void onInitialized(SpotifyPlayer spotifyPlayer) {
                         mPlayer = spotifyPlayer;
-                        mPlayer.addConnectionStateCallback(null);
-                        mPlayer.addNotificationCallback(null);
+                        mPlayer.addConnectionStateCallback(Controller.this);
+                        //mPlayer.addNotificationCallback(null);
 
                     }
 
@@ -89,7 +97,11 @@ public class Controller implements ConnectionStateCallback {
                         Log.e("InitializationObserver", "Get Player Error");
                     }
                 });
+            } else {
+                Log.e("authenticate", "Response is not a token");
             }
+        } else {
+            Log.e("authenticate", "Request code incorrect");
         }
     }
 
