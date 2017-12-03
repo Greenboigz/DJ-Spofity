@@ -1,5 +1,8 @@
 package spg01.SpotifyTest;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.spg01.spotifytest.DisplayQueueActivity;
 import com.example.spg01.spotifytest.MainActivity;
 import com.example.spg01.spotifytest.MyApp;
 import com.example.spg01.spotifytest.R;
@@ -42,10 +46,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
     private List<Track> mValues;
     private final OnSongListListener mListener;
+    private Context context;
 
-    public SongAdapter(List<Track> items, OnSongListListener listener) {
+    public SongAdapter(List<Track> items, OnSongListListener listener, Context context) {
         mValues = items;
         mListener = listener;
+        this.context = context;
     }
 
     @Override
@@ -64,9 +70,26 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    addSong(holder.mTrack.uri, holder.mTrack.name);
-                    Log.v("OnClick", String.format("Adding song %s to Queue", holder.mTrack.name));
-                    Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Adding song %s to Queue", holder.mTrack.name), Toast.LENGTH_LONG);
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    //Toast.makeText(MyApp.getContext(), "Adding song " + holder.mTrack.name + " to Queue", Toast.LENGTH_LONG);
+                                    addSong(holder.mTrack.uri, holder.mTrack.name);
+                                    Log.v("OnClick", String.format("Adding song %s to Queue", holder.mTrack.name));
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Add song /'" + holder.mTrack.name + "/' to the queue?").setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("Cancel", dialogClickListener).show();
                 }
             }
         });
@@ -82,8 +105,8 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
+                //Toast.makeText(MyApp.getContext(), "Adding song " + name + " to Queue", Toast.LENGTH_LONG);
                 Log.v("OnClick", String.format("Added song %s to Queue", name));
-                Toast.makeText(MainActivity.mActivity.getBaseContext(), String.format("Added song %s to Queue", name), Toast.LENGTH_LONG);
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override
@@ -105,6 +128,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
 
         q.add(postReq);
+        //Toast.makeText(MyApp.getContext(), "Added song " + name + " to Queue", Toast.LENGTH_LONG);
     }
 
     @Override

@@ -76,7 +76,7 @@ public class MainActivity extends Activity implements
         mSongRecyclerView.setLayoutManager(new LinearLayoutManager(this.getBaseContext()));
 
         mTracks = new ArrayList<>();
-        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener());
+        mSpotifyAdapter = new SongAdapter(mTracks, new OnSongListListener(), this);
         mSongRecyclerView.setAdapter(mSpotifyAdapter);
     }
 

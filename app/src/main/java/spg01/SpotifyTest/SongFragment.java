@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.spg01.spotifytest.MyApp;
 import com.example.spg01.spotifytest.R;
 
 import kaaes.spotify.webapi.android.models.Track;
@@ -71,7 +72,7 @@ public class SongFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new SongAdapter(new ArrayList<Track>(), mListener));
+            recyclerView.setAdapter(new SongAdapter(new ArrayList<Track>(), mListener, context));
         }
         return view;
     }
