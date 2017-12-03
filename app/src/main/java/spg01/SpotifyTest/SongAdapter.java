@@ -88,7 +88,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Add song /'" + holder.mTrack.name + "/' to the queue?").setPositiveButton("Yes", dialogClickListener)
+                    builder.setMessage("Add song \"" + holder.mTrack.name + "\" to the queue?").setPositiveButton("Yes", dialogClickListener)
                             .setNegativeButton("Cancel", dialogClickListener).show();
                 }
             }
