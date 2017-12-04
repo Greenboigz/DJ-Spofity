@@ -22,34 +22,39 @@
             android:id="@+id/SongTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:maxLines="1"
-            android:lines="1"
+            android:layout_margin="3dp"
             android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Song Name"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/AlbumTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:maxLines="1"
-            android:lines="1"
+            android:layout_margin="3dp"
             android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Album Name"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/ArtistTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:maxLines="1"
-            android:lines="1"
+            android:layout_margin="3dp"
             android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Artist Name"
-            android:textAppearance="?attr/textAppearanceListItem" />
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14dp" />
     </LinearLayout>
 
 </LinearLayout>

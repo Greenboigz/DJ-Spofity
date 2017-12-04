@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -104,6 +105,11 @@ public class DisplayQueueActivity extends AppCompatActivity implements Connectio
         mSongTextView = (TextView) findViewById(R.id.CurSongTextView);
         mAlbumTextView = (TextView) findViewById(R.id.CurAlbumTextView);
         mArtistTextView = (TextView) findViewById(R.id.CurArtistTextView);
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/ProximaNova_Regular.otf");
+        mSongTextView.setTypeface(typeface);
+        mAlbumTextView.setTypeface(typeface);
+        mArtistTextView.setTypeface(typeface);
 
         mPlayPauseButton = (ImageButton) findViewById(R.id.playPauseButton);
 

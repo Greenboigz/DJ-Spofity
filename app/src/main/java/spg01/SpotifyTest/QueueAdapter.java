@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -104,6 +105,12 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.ViewHolder> 
             mSongTextView = (TextView) view.findViewById(R.id.SongTextView);
             mAlbumTextView = (TextView) view.findViewById(R.id.AlbumTextView);
             mArtistTextView = (TextView) view.findViewById(R.id.ArtistTextView);
+
+            Typeface typeface = Typeface.createFromAsset(view.getContext().getAssets(), "fonts/ProximaNova_Regular.otf");
+            mSongTextView.setTypeface(typeface);
+            mAlbumTextView.setTypeface(typeface);
+            mArtistTextView.setTypeface(typeface);
+
             this.bind();
         }
 

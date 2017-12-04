@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,13 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.spg01.spotifytest.DisplayQueueActivity;
 import com.example.spg01.spotifytest.MainActivity;
-import com.example.spg01.spotifytest.MyApp;
 import com.example.spg01.spotifytest.R;
-import com.spotify.sdk.android.player.Error;
-import com.spotify.sdk.android.player.Player;
-import com.spotify.sdk.android.player.Player.OperationCallback;
 
 import kaaes.spotify.webapi.android.models.Track;
 import spg01.SpotifyTest.SongFragment.OnListFragmentInteractionListener;
@@ -75,7 +70,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    //Toast.makeText(MyApp.getContext(), "Adding song " + holder.mTrack.name + " to Queue", Toast.LENGTH_LONG);
                                     addSong(holder.mTrack.uri, holder.mTrack.name);
                                     Log.v("OnClick", String.format("Adding song %s to Queue", holder.mTrack.name));
                                     break;
@@ -105,7 +99,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                //Toast.makeText(MyApp.getContext(), "Adding song " + name + " to Queue", Toast.LENGTH_LONG);
+                //Toast.makeText(context, "Added song " + name + " to the Queue!", Toast.LENGTH_LONG);
                 Log.v("OnClick", String.format("Added song %s to Queue", name));
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
@@ -128,7 +122,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
 
 
         q.add(postReq);
-        //Toast.makeText(MyApp.getContext(), "Added song " + name + " to Queue", Toast.LENGTH_LONG);
     }
 
     @Override
@@ -179,6 +172,11 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ViewHolder> {
                             }
                         }
                     }                }).start();
+
+                Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/ProximaNova_Regular.otf");
+                mSongTextView.setTypeface(typeface);
+                mAlbumTextView.setTypeface(typeface);
+                mArtistTextView.setTypeface(typeface);
 
                 mSongTextView.setText(mTrack.name.toString());
                 mAlbumTextView.setText(mTrack.album.name);
