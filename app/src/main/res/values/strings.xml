@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SpotifyTest</string>
+    <string name="app_name">DJ-Spot</string>
     <string name="artist">Artist</string>
     <string name="songName">Song</string>
     <string name="upvote">Upvote Song</string>
